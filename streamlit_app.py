@@ -18,17 +18,23 @@ logging.basicConfig(
 )
 
 # Database connection string (update with your credentials)
-DB_HOST = "localhost"
+DB_HOST = "dpg-cuc0gelumphs73ds2nt0-a.frankfurt-postgres.render.com"
 DB_NAME = "deep_work_db"
 DB_USER = "postgres"
-DB_PASS = "innate-ai"
+DB_PASS = "Jm1kVvFDbknbIz4s6yK4NU7WIPKHGMtR"
 DB_PORT = "5432"
 
 params = st.query_params
 
 # Create database connection
+# engine = create_engine(
+#   f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+# )
+
+# Create database connection to Render app
+
 engine = create_engine(
-    f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    "postgresql+psycopg2://innateai:Jm1kVvFDbknbIz4s6yK4NU7WIPKHGMtR@dpg-cuc0gelumphs73ds2nt0-a.frankfurt-postgres.render.com/deep_work_db"
 )
 
 
@@ -254,6 +260,17 @@ if not st.session_state.sessions.empty:
 else:
     st.info("No sessions found in the database.")
 
+
+# Display recent sessions
+st.header("🕒 Recent Sessions")
+recent_sessions = st.session_state.sessions.sort_values("timestamp", ascending=False)
+for _, session in recent_sessions.iterrows():
+    with st.expander(
+        f"{session['name']} with {session['buddy']} - {session['timestamp']}"
+    ):
+        st.write(session["task"])
+
+
 # Display all-time leaderboard
 st.header("🏆 All-Time Leaderboard")
 
@@ -265,12 +282,3 @@ if not st.session_state.sessions.empty:
     all_time_leaderboard.columns = ["Team Member", "Total Sessions"]
 
     st.dataframe(all_time_leaderboard, hide_index=True)
-
-# Display recent sessions
-st.header("🕒 Recent Sessions")
-recent_sessions = st.session_state.sessions.sort_values("timestamp", ascending=False)
-for _, session in recent_sessions.iterrows():
-    with st.expander(
-        f"{session['name']} with {session['buddy']} - {session['timestamp']}"
-    ):
-        st.write(session["task"])
