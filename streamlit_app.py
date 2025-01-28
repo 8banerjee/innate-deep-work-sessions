@@ -8,6 +8,8 @@ import logging
 from sqlalchemy.exc import SQLAlchemyError
 import matplotlib.pyplot as plt  # Ensure plt is imported
 import altair as alt
+from dotenv import load_dotenv
+import os
 
 
 # Set up logging
@@ -18,11 +20,28 @@ logging.basicConfig(
 )
 
 # Database connection string (update with your credentials)
-DB_HOST = "dpg-cuc0gelumphs73ds2nt0-a.frankfurt-postgres.render.com"
-DB_NAME = "deep_work_db"
-DB_USER = "postgres"
-DB_PASS = "Jm1kVvFDbknbIz4s6yK4NU7WIPKHGMtR"
-DB_PORT = "5432"
+# DB_HOST = "dpg-cuc0gelumphs73ds2nt0-a.frankfurt-postgres.render.com"
+# DB_NAME = "deep_work_db"
+# DB_USER = "postgres"
+# DB_PASS = "Jm1kVvFDbknbIz4s6yK4NU7WIPKHGMtR"
+# DB_PORT = "5432"
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Read database credentials from environment variables
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+DB_PORT = os.getenv("DB_PORT")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Build the database connection string
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
 
 params = st.query_params
 
@@ -33,9 +52,7 @@ params = st.query_params
 
 # Create database connection to Render app
 
-engine = create_engine(
-    "postgresql+psycopg2://innateai:Jm1kVvFDbknbIz4s6yK4NU7WIPKHGMtR@dpg-cuc0gelumphs73ds2nt0-a.frankfurt-postgres.render.com/deep_work_db"
-)
+engine = create_engine(DATABASE_URL)
 
 
 def save_session_to_db(name, buddy, task):
