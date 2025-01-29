@@ -19,12 +19,6 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",  # Log format
 )
 
-# Database connection string (update with your credentials)
-# DB_HOST = "dpg-cuc0gelumphs73ds2nt0-a.frankfurt-postgres.render.com"
-# DB_NAME = "deep_work_db"
-# DB_USER = "postgres"
-# DB_PASS = "Jm1kVvFDbknbIz4s6yK4NU7WIPKHGMtR"
-# DB_PORT = "5432"
 
 from dotenv import load_dotenv
 
